@@ -2,7 +2,7 @@
   <form @submit.prevent="submitForm">
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label for="name" class="form-label">Nome *</label>
+        <label for="name" class="form-label">Name *</label>
         <input 
           v-model="form.name" 
           type="text" 
@@ -17,9 +17,9 @@
       </div>
       
       <div class="col-md-6 mb-3">
-        <label for="price" class="form-label">Preço *</label>
+        <label for="price" class="form-label">Price *</label>
         <div class="input-group">
-          <span class="input-group-text">R$</span>
+          <span class="input-group-text">$</span>
           <input 
             v-model="form.price" 
             type="number" 
@@ -37,7 +37,7 @@
     </div>
 
     <div class="mb-3">
-      <label for="description" class="form-label">Descrição</label>
+      <label for="description" class="form-label">Description</label>
       <textarea 
         v-model="form.description" 
         class="form-control" 
@@ -52,7 +52,7 @@
 
     <div class="row">
       <div class="col-md-6 mb-3">
-        <label for="quantity" class="form-label">Quantidade *</label>
+        <label for="quantity" class="form-label">Quantity *</label>
         <input 
           v-model="form.quantity" 
           type="number" 
@@ -69,15 +69,15 @@
 
     <div class="d-flex justify-content-end">
       <button type="button" class="btn btn-secondary me-2" @click="$emit('cancel')">
-        <i class="fas fa-times me-1"></i>Cancelar
+        <i class="fas fa-times me-1"></i>Cancel
       </button>
       <button type="submit" class="btn btn-success" :disabled="isSubmitting">
         <template v-if="isSubmitting">
           <span class="spinner-border spinner-border-sm me-1" role="status"></span>
-          Salvando...
+          Saving...
         </template>
         <template v-else>
-          <i class="fas fa-save me-1"></i>Salvar
+          <i class="fas fa-save me-1"></i>Save
         </template>
       </button>
     </div>
@@ -114,7 +114,7 @@ export default {
         if (error.response && error.response.status === 422) {
           this.errors = error.response.data.errors
         } else {
-          this.$toast.error('Erro ao criar produto. Tente novamente.')
+          this.$toast.error('Error creating product. Please try again.')
           console.error('Create error:', error)
         }
       } finally {

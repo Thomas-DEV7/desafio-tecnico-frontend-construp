@@ -1,13 +1,13 @@
 <template>
   <div class="container mt-4">
-    <!-- Modal de Edição -->
+    <!-- Edit Modal -->
     <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel"
       aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header bg-primary text-white">
             <h5 class="modal-title" id="editProductModalLabel">
-              <i class="fas fa-edit me-2"></i>Editar Produto
+              <i class="fas fa-edit me-2"></i>Edit Product
             </h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
@@ -15,7 +15,7 @@
             <form @submit.prevent="handleSubmit">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="editName" class="form-label">Nome</label>
+                  <label for="editName" class="form-label">Name</label>
                   <input v-model="form.name" type="text" class="form-control" id="editName" required>
                   <div v-if="errors.name" class="invalid-feedback d-block">
                     {{ errors.name[0] }}
@@ -23,9 +23,9 @@
                 </div>
 
                 <div class="col-md-6 mb-3">
-                  <label for="editPrice" class="form-label">Preço</label>
+                  <label for="editPrice" class="form-label">Price</label>
                   <div class="input-group">
-                    <span class="input-group-text">R$</span>
+                    <span class="input-group-text">$</span>
                     <input v-model="form.price" type="number" step="0.01" class="form-control" id="editPrice" required>
                   </div>
                   <div v-if="errors.price" class="invalid-feedback d-block">
@@ -35,7 +35,7 @@
               </div>
 
               <div class="mb-3">
-                <label for="editDescription" class="form-label">Descrição</label>
+                <label for="editDescription" class="form-label">Description</label>
                 <textarea v-model="form.description" class="form-control" id="editDescription" rows="3"></textarea>
                 <div v-if="errors.description" class="invalid-feedback d-block">
                   {{ errors.description[0] }}
@@ -44,7 +44,7 @@
 
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label for="editQuantity" class="form-label">Quantidade</label>
+                  <label for="editQuantity" class="form-label">Quantity</label>
                   <input v-model="form.quantity" type="number" class="form-control" id="editQuantity" required>
                   <div v-if="errors.quantity" class="invalid-feedback d-block">
                     {{ errors.quantity[0] }}
@@ -54,15 +54,15 @@
 
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                  <i class="fas fa-times me-1"></i>Cancelar
+                  <i class="fas fa-times me-1"></i>Cancel
                 </button>
                 <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
                   <template v-if="isSubmitting">
                     <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                    Salvando...
+                    Saving...
                   </template>
                   <template v-else>
-                    <i class="fas fa-save me-1"></i>Salvar
+                    <i class="fas fa-save me-1"></i>Save
                   </template>
                 </button>
               </div>
@@ -72,31 +72,31 @@
       </div>
     </div>
 
-    <!-- Modal de Confirmação de Exclusão -->
+    <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header bg-danger text-white">
             <h5 class="modal-title">
-              <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Exclusão
+              <i class="fas fa-exclamation-triangle me-2"></i>Confirm Deletion
             </h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p>Tem certeza que deseja excluir o produto <strong>{{ productToDelete?.name }}</strong>?</p>
-            <p class="text-muted">Esta ação não pode ser desfeita.</p>
+            <p>Are you sure you want to delete product <strong>{{ productToDelete?.name }}</strong>?</p>
+            <p class="text-muted">This action cannot be undone.</p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-              <i class="fas fa-times me-1"></i>Cancelar
+              <i class="fas fa-times me-1"></i>Cancel
             </button>
             <button type="button" class="btn btn-danger" @click="confirmDelete" :disabled="isDeleting">
               <template v-if="isDeleting">
                 <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-                Excluindo...
+                Deleting...
               </template>
               <template v-else>
-                <i class="fas fa-trash-alt me-1"></i>Excluir
+                <i class="fas fa-trash-alt me-1"></i>Delete
               </template>
             </button>
           </div>
@@ -104,14 +104,14 @@
       </div>
     </div>
 
-    <!-- Lista de Produtos -->
+    <!-- Products List -->
     <div class="card shadow-sm">
       <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
         <h3 class="mb-0">
-          <i class="fas fa-boxes me-2"></i>Lista de Produtos
+          <i class="fas fa-boxes me-2"></i>Products List
         </h3>
         <button class="btn btn-light btn-sm" @click="refreshProducts">
-          <i class="fas fa-sync-alt me-1"></i>Atualizar
+          <i class="fas fa-sync-alt me-1"></i>Refresh
         </button>
       </div>
 
@@ -119,16 +119,16 @@
         <!-- Loading State -->
         <div v-if="isLoading" class="text-center py-5">
           <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Carregando...</span>
+            <span class="visually-hidden">Loading...</span>
           </div>
-          <p class="mt-2">Carregando produtos...</p>
+          <p class="mt-2">Loading products...</p>
         </div>
 
         <!-- Empty State -->
         <div v-else-if="products.length === 0" class="text-center py-5">
           <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
-          <h5 class="text-muted">Nenhum produto encontrado</h5>
-          <p class="text-muted">Clique no botão "Adicionar Produto" para começar</p>
+          <h5 class="text-muted">No products found</h5>
+          <p class="text-muted">Click "Add Product" button to get started</p>
         </div>
 
         <!-- Products Table -->
@@ -137,11 +137,11 @@
             <thead class="table-light">
               <tr>
                 <th>ID</th>
-                <th>Nome</th>
-                <th>Descrição</th>
-                <th class="text-end">Preço</th>
-                <th class="text-center">Estoque</th>
-                <th class="text-end">Ações</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th class="text-end">Price</th>
+                <th class="text-center">Stock</th>
+                <th class="text-end">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -151,7 +151,7 @@
                   <span class="fw-semibold">{{ product.name }}</span>
                 </td>
                 <td>
-                  <span class="text-muted small">{{ product.description || 'Sem descrição' }}</span>
+                  <span class="text-muted small">{{ product.description || 'No description' }}</span>
                 </td>
                 <td class="text-end">
                   {{ formatCurrency(product.price) }}
@@ -167,10 +167,10 @@
                 </td>
                 <td class="text-end">
                   <div class="btn-group btn-group-sm" role="group">
-                    <button @click="openEditModal(product)" class="btn btn-outline-primary" title="Editar">
+                    <button @click="openEditModal(product)" class="btn btn-outline-primary" title="Edit">
                       <i class="fas fa-edit"></i>
                     </button>
-                    <button @click="openDeleteModal(product)" class="btn btn-outline-danger" title="Excluir">
+                    <button @click="openDeleteModal(product)" class="btn btn-outline-danger" title="Delete">
                       <i class="fas fa-trash-alt"></i>
                     </button>
                   </div>
@@ -184,7 +184,7 @@
             <ul class="pagination justify-content-center">
               <li class="page-item" :class="{ disabled: pagination.current_page === 1 }">
                 <button class="page-link" @click="fetchProducts(pagination.current_page - 1)">
-                  &laquo; Anterior
+                  &laquo; Previous
                 </button>
               </li>
 
@@ -197,7 +197,7 @@
 
               <li class="page-item" :class="{ disabled: pagination.current_page === pagination.last_page }">
                 <button class="page-link" @click="fetchProducts(pagination.current_page + 1)">
-                  Próxima &raquo;
+                  Next &raquo;
                 </button>
               </li>
             </ul>
@@ -208,10 +208,10 @@
       <div class="card-footer bg-light">
         <div class="d-flex justify-content-between align-items-center">
           <small class="text-muted">
-            Mostrando {{ pagination.from }} a {{ pagination.to }} de {{ pagination.total }} produtos
+            Showing {{ pagination.from }} to {{ pagination.to }} of {{ pagination.total }} products
           </small>
           <button class="btn btn-primary btn-sm" @click="$emit('open-create-modal')">
-            <i class="fas fa-plus-circle me-1"></i>Adicionar Produto
+            <i class="fas fa-plus-circle me-1"></i>Add Product
           </button>
         </div>
       </div>
@@ -261,9 +261,9 @@ export default {
   },
   methods: {
     formatCurrency(value) {
-      return new Intl.NumberFormat('pt-BR', {
+      return new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'BRL'
+        currency: 'USD'
       }).format(value)
     },
     openEditModal(product) {
@@ -285,12 +285,12 @@ export default {
         this.editModal.hide()
         await this.fetchProducts(this.pagination.current_page);
 
-        this.$toast.success('Produto atualizado com sucesso!')
+        this.$toast.success('Product updated successfully!')
       } catch (error) {
         if (error.response && error.response.status === 422) {
           this.errors = error.response.data.errors
         } else {
-          this.$toast.error('Erro ao atualizar produto. Tente novamente.')
+          this.$toast.error('Error updating product. Please try again.')
           console.error('Update error:', error)
         }
       } finally {
@@ -304,11 +304,11 @@ export default {
         await api.delete(`/products/${this.productToDelete.id}`)
         this.$emit('product-deleted', this.productToDelete.id)
         this.deleteModal.hide()
-              await this.fetchProducts(this.pagination.current_page);
+        await this.fetchProducts(this.pagination.current_page);
 
-        this.$toast.success('Produto excluído com sucesso!')
+        this.$toast.success('Product deleted successfully!')
       } catch (error) {
-        this.$toast.error('Erro ao excluir produto. Tente novamente.')
+        this.$toast.error('Error deleting product. Please try again.')
         console.error('Delete error:', error)
       } finally {
         this.isDeleting = false
@@ -323,7 +323,7 @@ export default {
         const response = await api.get('/products', {
           params: {
             page,
-            per_page: this.itemsPerPage // Opcional: pode ser uma prop ou data property
+            per_page: this.itemsPerPage
           }
         })
 
@@ -337,7 +337,7 @@ export default {
           per_page: response.data.meta.per_page
         }
       } catch (error) {
-        this.$toast.error('Erro ao carregar produtos')
+        this.$toast.error('Error loading products')
         console.error('Fetch error:', error)
       } finally {
         this.isLoading = false
