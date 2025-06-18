@@ -283,6 +283,8 @@ export default {
         const response = await api.put(`/products/${this.form.id}`, this.form)
         this.$emit('product-updated', response.data.data)
         this.editModal.hide()
+        await this.fetchProducts(this.pagination.current_page);
+
         this.$toast.success('Produto atualizado com sucesso!')
       } catch (error) {
         if (error.response && error.response.status === 422) {
@@ -302,6 +304,8 @@ export default {
         await api.delete(`/products/${this.productToDelete.id}`)
         this.$emit('product-deleted', this.productToDelete.id)
         this.deleteModal.hide()
+              await this.fetchProducts(this.pagination.current_page);
+
         this.$toast.success('Produto excluído com sucesso!')
       } catch (error) {
         this.$toast.error('Erro ao excluir produto. Tente novamente.')
