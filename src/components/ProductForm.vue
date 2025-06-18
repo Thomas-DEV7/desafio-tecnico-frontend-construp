@@ -1,117 +1,134 @@
 <template>
-  <div class="container mt-4">
-    <div class="card shadow">
-      <div class="card-header bg-primary text-white">
-        <h3 class="card-title">
-          <i class="fas fa-plus-circle me-2"></i>Register Product
-        </h3>
+  <form @submit.prevent="submitForm">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="name" class="form-label">Nome *</label>
+        <input 
+          v-model="form.name" 
+          type="text" 
+          class="form-control" 
+          id="name"
+          :class="{ 'is-invalid': errors.name }"
+          required
+        >
+        <div v-if="errors.name" class="invalid-feedback">
+          {{ errors.name[0] }}
+        </div>
       </div>
-      <div class="card-body">
-        <form @submit.prevent="submitForm">
-          <div class="mb-3">
-            <label for="name" class="form-label">Product Name</label>
-            <input type="text" class="form-control" id="name" v-model="product.name" 
-                   :class="{ 'is-invalid': errors.name }">
-            <div v-if="errors.name" class="invalid-feedback">
-              {{ errors.name[0] }}
-            </div>
-          </div>
-          
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" id="description" rows="3" 
-                      v-model="product.description" :class="{ 'is-invalid': errors.description }"></textarea>
-            <div v-if="errors.description" class="invalid-feedback">
-              {{ errors.description[0] }}
-            </div>
-          </div>
-          
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="price" class="form-label">Price</label>
-              <div class="input-group">
-                <span class="input-group-text">$</span>
-                <input type="number" step="0.01" class="form-control" id="price" 
-                       v-model="product.price" :class="{ 'is-invalid': errors.price }">
-                <div v-if="errors.price" class="invalid-feedback">
-                  {{ errors.price[0] }}
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-md-6 mb-3">
-              <label for="quantity" class="form-label">Quantity</label>
-              <input type="number" class="form-control" id="quantity" 
-                     v-model="product.quantity" :class="{ 'is-invalid': errors.quantity }">
-              <div v-if="errors.quantity" class="invalid-feedback">
-                {{ errors.quantity[0] }}
-              </div>
-            </div>
-          </div>
-          
-          <div class="d-grid gap-2">
-            <button class="btn btn-primary" type="submit" :disabled="loading">
-              <span v-if="loading" class="spinner-border spinner-border-sm me-1" role="status"></span>
-              <i v-else class="fas fa-save me-1"></i>
-              {{ loading ? 'Saving...' : 'Save Product' }}
-            </button>
-          </div>
-        </form>
+      
+      <div class="col-md-6 mb-3">
+        <label for="price" class="form-label">Preço *</label>
+        <div class="input-group">
+          <span class="input-group-text">R$</span>
+          <input 
+            v-model="form.price" 
+            type="number" 
+            step="0.01" 
+            class="form-control" 
+            id="price"
+            :class="{ 'is-invalid': errors.price }"
+            required
+          >
+        </div>
+        <div v-if="errors.price" class="invalid-feedback">
+          {{ errors.price[0] }}
+        </div>
       </div>
     </div>
-  </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Descrição</label>
+      <textarea 
+        v-model="form.description" 
+        class="form-control" 
+        id="description" 
+        rows="3"
+        :class="{ 'is-invalid': errors.description }"
+      ></textarea>
+      <div v-if="errors.description" class="invalid-feedback">
+        {{ errors.description[0] }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="quantity" class="form-label">Quantidade *</label>
+        <input 
+          v-model="form.quantity" 
+          type="number" 
+          class="form-control" 
+          id="quantity"
+          :class="{ 'is-invalid': errors.quantity }"
+          required
+        >
+        <div v-if="errors.quantity" class="invalid-feedback">
+          {{ errors.quantity[0] }}
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-secondary me-2" @click="$emit('cancel')">
+        <i class="fas fa-times me-1"></i>Cancelar
+      </button>
+      <button type="submit" class="btn btn-success" :disabled="isSubmitting">
+        <template v-if="isSubmitting">
+          <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+          Salvando...
+        </template>
+        <template v-else>
+          <i class="fas fa-save me-1"></i>Salvar
+        </template>
+      </button>
+    </div>
+  </form>
 </template>
 
 <script>
-import api from '../services/api'
+import api from '@/services/api'
 
 export default {
+  name: 'ProductForm',
   data() {
     return {
-      product: {
+      form: {
         name: '',
         description: '',
         price: 0,
         quantity: 0
       },
       errors: {},
-      loading: false
+      isSubmitting: false
     }
   },
   methods: {
     async submitForm() {
-      this.loading = true
+      this.isSubmitting = true
       this.errors = {}
-      
+
       try {
-        const response = await api.post('/products', this.product)
-        this.$emit('product-added', response.data.data)
-        this.product = {
-          name: '',
-          description: '',
-          price: 0,
-          quantity: 0
-        }
-        this.$toast.success('Product registered successfully!')
+        const response = await api.post('/products', this.form)
+        this.$emit('product-created', response.data.data)
+        this.resetForm()
       } catch (error) {
         if (error.response && error.response.status === 422) {
           this.errors = error.response.data.errors
         } else {
-          this.$toast.error('Error saving product. Please try again.')
+          this.$toast.error('Erro ao criar produto. Tente novamente.')
+          console.error('Create error:', error)
         }
       } finally {
-        this.loading = false
+        this.isSubmitting = false
+      }
+    },
+    resetForm() {
+      this.form = {
+        name: '',
+        description: '',
+        price: 0,
+        quantity: 0
       }
     }
   }
 }
 </script>
-
-<style scoped>
-.card {
-  border-radius: 10px;
-}
-.card-header {
-  border-radius: 10px 10px 0 0 !important;
-}
-</style>
