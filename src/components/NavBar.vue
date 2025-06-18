@@ -36,13 +36,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .navbar {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 
 .nav-link.router-link-exact-active {
-    font-weight: bold;
-    border-bottom: 2px solid white;
+  font-weight: bold;
+  border-bottom: 2px solid white;
+}
+
+body, html, #app {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 </style>
