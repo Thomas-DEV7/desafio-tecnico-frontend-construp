@@ -10,7 +10,7 @@
               <div class="modal-content">
                 <div class="modal-header bg-success text-white">
                   <h5 class="modal-title">
-                    <i class="fas fa-plus-circle me-2"></i>Novo Produto
+                    <i class="fas fa-plus-circle me-2"></i>New Product
                   </h5>
                   <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
