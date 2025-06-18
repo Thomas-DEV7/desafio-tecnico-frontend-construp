@@ -1,29 +1,24 @@
-# product-registration-frontend
+# Product Registration System - Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+## System Requirements
+- Node.js 16+
+- npm 8+ or yarn 1.22+
+- Vue.js 3.x
 
-## Recommended IDE Setup
+## Installation
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+1. Clone the repository:
+```bash
+git clone https://github.com/Thomas-DEV7/product-registration-frontend
+cd product-registration-frontend
+```
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+2. Install dependencies:
+```bash
 npm install
 ```
 
-### Compile and Hot-Reload for Development
-
-```sh
+3. Start development server:
+```bash
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
 ```
