@@ -218,9 +218,9 @@
     </div>
   </div>
 </template>
-
 <script>
 import { Modal } from 'bootstrap'
+import { useToast } from 'vue-toastification'
 import api from '@/services/api'
 
 export default {
@@ -234,6 +234,10 @@ export default {
       type: Object,
       default: () => ({})
     }
+  },
+  setup() {
+    const toast = useToast()
+    return { toast }
   },
   data() {
     return {
@@ -283,14 +287,13 @@ export default {
         const response = await api.put(`/products/${this.form.id}`, this.form)
         this.$emit('product-updated', response.data.data)
         this.editModal.hide()
-        await this.fetchProducts(this.pagination.current_page);
-
-        this.$toast.success('Product updated successfully!')
+        await this.fetchProducts(this.pagination.current_page)
+        this.toast.success('Produto atualizado com sucesso')
       } catch (error) {
-        if (error.response && error.response.status === 422) {
+        if (error.response?.status === 422) {
           this.errors = error.response.data.errors
         } else {
-          this.$toast.error('Error updating product. Please try again.')
+          this.toast.error('Erro ao atualizar o produto. Tente novamente.')
           console.error('Update error:', error)
         }
       } finally {
@@ -304,11 +307,10 @@ export default {
         await api.delete(`/products/${this.productToDelete.id}`)
         this.$emit('product-deleted', this.productToDelete.id)
         this.deleteModal.hide()
-        await this.fetchProducts(this.pagination.current_page);
-
-        this.$toast.success('Product deleted successfully!')
+        await this.fetchProducts(this.pagination.current_page)
+        this.toast.success('Produto deletado com sucesso')
       } catch (error) {
-        this.$toast.error('Error deleting product. Please try again.')
+        this.toast.error('Erro ao deletar o produto. Tente novamente.')
         console.error('Delete error:', error)
       } finally {
         this.isDeleting = false
@@ -337,25 +339,25 @@ export default {
           per_page: response.data.meta.per_page
         }
       } catch (error) {
-        this.$toast.error('Error loading products')
+        this.toast.error('Erro ao carregar os produtos')
         console.error('Fetch error:', error)
       } finally {
         this.isLoading = false
       }
     },
     async reloadProducts() {
-    try {
-      const response = await api.get('/products', {
-        params: { page: this.pagination.current_page || 1 }
-      });
+      try {
+        const response = await api.get('/products', {
+          params: { page: this.pagination.current_page || 1 }
+        })
 
-      this.products = response.data.data;
-      this.pagination = response.data.meta;
-    } catch (error) {
-      this.$toast.error('Erro ao recarregar produtos');
-      console.error(error);
+        this.products = response.data.data
+        this.pagination = response.data.meta
+      } catch (error) {
+        this.toast.error('Erro ao recarregar produtos')
+        console.error(error)
+      }
     }
-  }
   },
   watch: {
     initialProducts(newVal) {
@@ -367,6 +369,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .table th {

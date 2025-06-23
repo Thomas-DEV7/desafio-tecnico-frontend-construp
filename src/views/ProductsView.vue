@@ -35,6 +35,7 @@
 
 <script>
 import { Modal } from 'bootstrap'
+import { useToast } from 'vue-toastification'
 import NavBar from '@/components/NavBar.vue'
 import ProductList from '@/components/ProductList.vue'
 import ProductForm from '@/components/ProductForm.vue'
@@ -46,6 +47,10 @@ export default {
     NavBar,
     ProductList,
     ProductForm
+  },
+  setup() {
+    const toast = useToast()
+    return { toast }
   },
   data() {
     return {
@@ -69,7 +74,6 @@ export default {
     this.fetchProducts()
   },
   methods: {
-
     async fetchProducts(page = 1) {
       this.isLoading = true
       try {
@@ -88,7 +92,7 @@ export default {
           }
         }
       } catch (error) {
-        this.$toast.error('Erro ao carregar produtos')
+        this.toast.error('Erro ao carregar produtos')
         console.error('Error fetching products:', error)
       } finally {
         this.isLoading = false
@@ -101,23 +105,21 @@ export default {
       this.createModal.hide()
     },
     async handleProductCreated() {
-      this.createModal.hide();
-
-      // Mostra loading imediatamente
-      this.$refs.productList.isLoading = true;
+      this.createModal.hide()
+      this.$refs.productList.isLoading = true
 
       try {
-        await this.$refs.productList.reloadProducts();
-        this.$toast.success('Produto criado com sucesso!');
+        await this.$refs.productList.reloadProducts()
+        this.toast.success('Produto criado com sucesso')
       } catch (error) {
-        console.error(error);
+        console.error(error)
         const errorMessage =
           error?.response?.data?.message ||
           error?.message ||
-          'Erro desconhecido ao atualizar a lista de produtos';
-        this.$toast.error(errorMessage);
+          'Erro ao atualizar a lista de produtos'
+        this.toast.error(errorMessage)
       } finally {
-        this.$refs.productList.isLoading = false;
+        this.$refs.productList.isLoading = false
       }
     },
     handleProductUpdated(updatedProduct) {
@@ -130,7 +132,6 @@ export default {
       this.products.data = this.products.data.filter(p => p.id !== productId)
       this.products.meta.total -= 1
 
-      // Se a página ficou vazia e não é a primeira, volta uma página
       if (this.products.data.length === 0 && this.products.meta.current_page > 1) {
         this.fetchProducts(this.products.meta.current_page - 1)
       }
@@ -138,10 +139,10 @@ export default {
     refreshProducts() {
       this.fetchProducts(this.products.meta.current_page)
     }
-  },
-  
+  }
 }
 </script>
+
 
 <style scoped>
 .container-fluid {

@@ -62,12 +62,16 @@
     </div>
   </form>
 </template>
-
 <script>
 import api from '@/services/api'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'ProductForm',
+  setup() {
+    const toast = useToast()
+    return { toast }
+  },
   data() {
     return {
       form: {
@@ -137,16 +141,7 @@ export default {
       if (Object.keys(this.errors).length === 0) {
         this.submitForm();
       } else {
-        this.$toast.error('Please fix the form errors before submitting');
-      }
-    },
-
-    async reloadProducts() {
-      this.isLoading = true;
-      try {
-        await this.fetchProducts(this.pagination.current_page);
-      } finally {
-        this.isLoading = false;
+        this.toast.error('Please fix the form errors before submitting');
       }
     },
 
@@ -164,14 +159,14 @@ export default {
 
         this.$emit('product-created', response.data.data);
         this.resetForm();
-        this.$toast.success('Produto criado com sucesso!');
+        this.toast.success('Produto criado com sucesso!');
       } catch (error) {
         if (error.response?.status === 422) {
           this.errors = error.response.data.errors;
         } else {
           const errorMessage =
             error.response?.data?.message || error.message || 'Erro ao criar produto';
-          this.$toast.error(errorMessage);
+          this.toast.error(' ' + errorMessage);
         }
       } finally {
         this.isSubmitting = false;
@@ -190,6 +185,7 @@ export default {
   }
 }
 </script>
+
 
 <style scoped>
 .invalid-feedback {
