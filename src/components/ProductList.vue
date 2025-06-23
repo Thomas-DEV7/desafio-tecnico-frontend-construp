@@ -342,7 +342,20 @@ export default {
       } finally {
         this.isLoading = false
       }
+    },
+    async reloadProducts() {
+    try {
+      const response = await api.get('/products', {
+        params: { page: this.pagination.current_page || 1 }
+      });
+
+      this.products = response.data.data;
+      this.pagination = response.data.meta;
+    } catch (error) {
+      this.$toast.error('Erro ao recarregar produtos');
+      console.error(error);
     }
+  }
   },
   watch: {
     initialProducts(newVal) {

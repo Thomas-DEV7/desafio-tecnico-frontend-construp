@@ -12,27 +12,21 @@
                   <h5 class="modal-title">
                     <i class="fas fa-plus-circle me-2"></i>New Product
                   </h5>
-                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <ProductForm 
-                    @product-created="handleProductCreated"
-                    @cancel="closeCreateModal"
-                  />
+                  <ProductForm @product-created="handleProductCreated" @cancel="closeCreateModal" />
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Lista de Produtos -->
-          <ProductList
-            ref="productList"
-            :initial-products="products.data"
-            :initial-pagination="products.meta"
-            @product-updated="handleProductUpdated"
-            @product-deleted="handleProductDeleted"
-            @open-create-modal="openCreateModal"
-          />
+          <ProductList ref="productList" :initial-products="products.data" :initial-pagination="products.meta"
+            @product-updated="handleProductUpdated" @product-deleted="handleProductDeleted"
+            @open-create-modal="openCreateModal" />
+
         </div>
       </div>
     </div>
@@ -75,6 +69,7 @@ export default {
     this.fetchProducts()
   },
   methods: {
+
     async fetchProducts(page = 1) {
       this.isLoading = true
       try {
@@ -105,16 +100,24 @@ export default {
     closeCreateModal() {
       this.createModal.hide()
     },
-    async handleProductCreated(newProduct) {
-      this.createModal.hide()
-      this.$toast.success('Produto criado com sucesso!')
-      
-      // Se estiver na primeira página, recarrega os dados
-      if (this.products.meta.current_page === 1) {
-        await this.fetchProducts(1)
-      } else {
-        // Se não, vai para a primeira página
-        this.$refs.productList.fetchProducts(1)
+    async handleProductCreated() {
+      this.createModal.hide();
+
+      // Mostra loading imediatamente
+      this.$refs.productList.isLoading = true;
+
+      try {
+        await this.$refs.productList.reloadProducts();
+        this.$toast.success('Produto criado com sucesso!');
+      } catch (error) {
+        console.error(error);
+        const errorMessage =
+          error?.response?.data?.message ||
+          error?.message ||
+          'Erro desconhecido ao atualizar a lista de produtos';
+        this.$toast.error(errorMessage);
+      } finally {
+        this.$refs.productList.isLoading = false;
       }
     },
     handleProductUpdated(updatedProduct) {
@@ -126,7 +129,7 @@ export default {
     handleProductDeleted(productId) {
       this.products.data = this.products.data.filter(p => p.id !== productId)
       this.products.meta.total -= 1
-      
+
       // Se a página ficou vazia e não é a primeira, volta uma página
       if (this.products.data.length === 0 && this.products.meta.current_page > 1) {
         this.fetchProducts(this.products.meta.current_page - 1)
@@ -135,7 +138,8 @@ export default {
     refreshProducts() {
       this.fetchProducts(this.products.meta.current_page)
     }
-  }
+  },
+  
 }
 </script>
 
