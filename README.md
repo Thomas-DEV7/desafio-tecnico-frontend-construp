@@ -13,8 +13,7 @@ A aplicação permite listar, cadastrar, editar e remover produtos com comunica�
 - Vue Router
 - Axios
 - Pinia (store)
-- Tailwind CSS
-- Docker
+- Bootstrap
 
 ---
 
