@@ -1,32 +1,48 @@
-
 # 🖥️ Frontend – Desafio Técnico CRUD de Produtos | Construp
 
-Este repositório contém o **frontend** da aplicação desenvolvida para o desafio técnico da **Construp**, utilizando **Vue.js 3**, com foco em consumo de uma API RESTful, experiência de usuário e responsividade.
+![Logo da Construp](https://www.construp.com.br/img/new-logo.bdeb3a22.png)
 
-A aplicação permite listar, cadastrar, editar e remover produtos com comunicação direta com o backend via Axios.
+Este repositório contém a implementação do **frontend** para o desafio técnico proposto pela empresa **Construp**, utilizando **Vue.js 3** com a API RESTful desenvolvida em Laravel. A interface permite interação completa com o CRUD de produtos e foi construída com foco em organização, responsividade e clareza de código.
 
 ---
 
-## 🧰 Tecnologias Utilizadas
+## 📌 Descrição do Desafio
 
-- Vue.js 3 (Vite)
+O desafio consistia em construir uma interface web capaz de se comunicar com uma API, oferecendo as seguintes funcionalidades:
+
+- Listagem de produtos (nome, preço, imagem e descrição)
+- Criação de novo produto
+- Edição de produto existente
+- Exclusão de produto
+- Layout responsivo e amigável
+- Integração com backend via HTTP (Axios)
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- Vue.js 3 (Vite + Composition API)
 - Vue Router
+- Pinia (Gerenciamento de estado)
 - Axios
-- Pinia (store)
-- Bootstrap
+- Tailwind CSS
+- Docker (ambiente de desenvolvimento)
+- Vitest (testes)
 
 ---
 
-## 📁 Estrutura de Pastas
+## 📁 Estrutura do Projeto
 
 ```bash
 frontend/
 ├── src/
-│   ├── views/
+│   ├── assets/
 │   ├── components/
-│   ├── stores/
 │   ├── router/
-│   └── assets/
+│   ├── stores/
+│   ├── views/
+│   └── App.vue
 ├── public/
 ├── .env.example
-└── vite.config.js
+├── vite.config.js
+└── README.md
