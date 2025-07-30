@@ -1,24 +1,38 @@
-# Product Registration System - Frontend
 
-## System Requirements
-- Node.js 16+
-- npm 8+ or yarn 1.22+
-- Vue.js 3.x
+---
 
-## Installation
+## 📁 README.md – **Frontend (Vue.js)**
 
-1. Clone the repository:
+```markdown
+# 🖥️ Frontend – Desafio Técnico CRUD de Produtos | Construp
+
+Este repositório contém o **frontend** da aplicação desenvolvida para o desafio técnico da **Construp**, utilizando **Vue.js 3**, com foco em consumo de uma API RESTful, experiência de usuário e responsividade.
+
+A aplicação permite listar, cadastrar, editar e remover produtos com comunicação direta com o backend via Axios.
+
+---
+
+## 🧰 Tecnologias Utilizadas
+
+- Vue.js 3 (Vite)
+- Vue Router
+- Axios
+- Pinia (store)
+- Tailwind CSS
+- Docker
+
+---
+
+## 📁 Estrutura de Pastas
+
 ```bash
-git clone https://github.com/Thomas-DEV7/product-registration-frontend
-cd product-registration-frontend
-```
-
-2. Install dependencies:
-```bash
-npm install
-```
-
-3. Start development server:
-```bash
-npm run dev
-```
+frontend/
+├── src/
+│   ├── views/
+│   ├── components/
+│   ├── stores/
+│   ├── router/
+│   └── assets/
+├── public/
+├── .env.example
+└── vite.config.js
