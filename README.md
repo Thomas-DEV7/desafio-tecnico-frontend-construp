@@ -1,9 +1,4 @@
 
----
-
-## 📁 README.md – **Frontend (Vue.js)**
-
-```markdown
 # 🖥️ Frontend – Desafio Técnico CRUD de Produtos | Construp
 
 Este repositório contém o **frontend** da aplicação desenvolvida para o desafio técnico da **Construp**, utilizando **Vue.js 3**, com foco em consumo de uma API RESTful, experiência de usuário e responsividade.
